@@ -16,9 +16,9 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@omnicar/sam-types@0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@omnicar/sam-types/-/sam-types-0.0.39.tgz#56039f188c3bc1dee76f5714acdc6f1a64eea231"
+"@omnicar/sam-types@0.0.108":
+  version "0.0.108"
+  resolved "https://registry.yarnpkg.com/@omnicar/sam-types/-/sam-types-0.0.108.tgz#94ba03105b9ec42aa99d76aa963e45729f44dba5"
 
 "@types/jest@23.3.7":
   version "23.3.7"

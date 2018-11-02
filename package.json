@@ -15,7 +15,7 @@
     "ts-jest": "22.4.4",
     "tslib": "1.9.0",
     "typescript": "2.8.3",
-    "@omnicar/sam-types": "0.0.39"
+    "@omnicar/sam-types": "0.0.108"
   },
   "scripts": {
     "test": "jest",
