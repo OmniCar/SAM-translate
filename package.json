@@ -3,19 +3,21 @@
   "description": "Handles fetching translations, looking up individual translations, and error reporting of missing translations",
   "author": "Omnicar A/S",
   "license": "MIT",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "devDependencies": {
+    "@omnicar/sam-types": "0.0.114",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.17",
     "jest": "24.0.0",
     "jest-fetch-mock": "2.1.0",
     "jest-localstorage-mock": "2.4.0",
-    "ts-jest": "22.4.6",
+    "ts-jest": "<23.10.0",
     "tslib": "1.9.3",
-    "typescript": "3.2.2",
-    "@omnicar/sam-types": "0.0.114"
+    "typescript": "3.2.2"
   },
   "scripts": {
     "test": "jest",
