@@ -1,8 +1,8 @@
+import { IsoLocale } from '@omnicar/sam-types'
 import {
   getTranslationsFromLocalStorage,
   persistTranslationsToLocalStorage,
 } from './localStorage'
-import { IsoLocale } from '@omnicar/sam-types'
 
 export interface ITranslateConfig {
   translationFileUrl: string
@@ -175,6 +175,9 @@ export const t = (
   context?: string,
   locale?: string,
 ) => {
+  if (key === '') {
+    return key
+  }
   if (!translations) {
     return replaceParams(key, replacements)
   }
