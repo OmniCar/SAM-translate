@@ -131,10 +131,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@omnicar/sam-types@0.0.114":
-  version "0.0.114"
-  resolved "https://registry.yarnpkg.com/@omnicar/sam-types/-/sam-types-0.0.114.tgz#8ce27115d768744cd0a3dfd482e0ce504fa81d2d"
-  integrity sha512-rjADinm/BUhHkyjVTHkVfIYWcgtXnnwF5oOqicjDdsnJFtC4KR4XyRnuwMtIyvV5Ad86B26nm3mIah4eaS9ToA==
+"@omnicar/sam-types@0.0.135":
+  version "0.0.135"
+  resolved "https://registry.yarnpkg.com/@omnicar/sam-types/-/sam-types-0.0.135.tgz#a47d5323732e0e38c737b1679773bb89a06dbc70"
+  integrity sha512-Vof6qe0yrFxq+KtiU8v1X5cBY6YWWcb8RN25sorCupoQI16nvft7sj2MQB98MyfNIAXLWzTmlBG7e+vhr+OWVw==
 
 "@types/jest@23.3.13":
   version "23.3.13"
