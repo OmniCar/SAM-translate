@@ -1,25 +1,24 @@
-import { mockResponseOnce } from 'jest-fetch-mock'
 import {
   exportTranslations,
-  initTranslations,
-  t,
-  ITranslateConfig,
-  getLocales,
-  setLocale,
   getLocale,
+  getLocales,
+  initTranslations,
+  ITranslateConfig,
+  setLocale,
+  t,
 } from '.'
 import {
+  context,
+  contextValue,
+  locale,
   mockTranslations,
+  noContextKey,
+  noContextValue,
   nonExistingPhrase,
+  nonExistingTokenPhrase,
   tokenKey,
   translatableKey,
   translatableValue,
-  context,
-  contextValue,
-  noContextKey,
-  noContextValue,
-  nonExistingTokenPhrase,
-  locale,
 } from '../test/setupJest'
 
 const customErrorCallback = jest.fn(e => {
@@ -41,7 +40,7 @@ test('Inits the translation configuration directly', async () => {
 })
 
 test('Inits the translation configuration from mock url', async () => {
-  mockResponseOnce(JSON.stringify(mockTranslations))
+  fetch(JSON.stringify(mockTranslations))
   const configuration: ITranslateConfig = {
     translationFileUrl: 'mock',
     errorCallback: customErrorCallback,
