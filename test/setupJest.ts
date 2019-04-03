@@ -1,6 +1,7 @@
+import * as fetchMock from 'jest-fetch-mock'
 import { ILocaleTranslation } from '../src'
 
-global.fetch = require('jest-fetch-mock')
+global.fetch = fetchMock as any
 
 export const locale = 'da-DK'
 export const translatableKey = 'Contract template'
