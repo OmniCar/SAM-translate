@@ -96,9 +96,7 @@ test('Correctly replaces words in a non existing phrase', () => {
     num2: '3',
   }
   expect(t(nonExistingTokenPhrase, replacements)).toEqual(
-    `You have ${replacements.num1} new contracts with ${
-      replacements.num2
-    } missing options`,
+    `You have ${replacements.num1} new contracts with ${replacements.num2} missing options`,
   )
 })
 
@@ -111,7 +109,7 @@ test('Changes the locale correctly', () => {
   expect(getLocale()).toEqual('da-DK')
 })
 
-test('Fails to set the locale to an unkown locale', () => {
-  expect(setLocale('nk-NO')).toBe(false)
-  expect(getLocale()).not.toEqual('nk-NO')
+test('Set the locale to an unkown locale', () => {
+  expect(setLocale('nk-NO')).toBe(true)
+  expect(getLocale()).toEqual('nk-NO')
 })
