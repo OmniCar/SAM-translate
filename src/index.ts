@@ -109,9 +109,7 @@ const getTranslationsFromRemote = async (): Promise<
     return json
   } catch (error) {
     logError(
-      `Unable to fetch translations from url: ${translationFileUrl}. Error: ${
-        error.message
-      }`,
+      `Unable to fetch translations from url: ${translationFileUrl}. Error: ${error.message}`,
     )
     return undefined
   }
@@ -149,11 +147,10 @@ export const setLocale = (locale: string) => {
     )
     return false
   }
-  if (!locales.find(l => l === locale)) {
+  if (!locales.find(l => l === locale) && !(locale.substr(0, 2) === 'en')) {
     logError(
       `Unable to set locale with locale: ${locale}. Locale not available`,
     )
-    return false
   }
   configuration.locale = locale as IsoLocale
   return true
@@ -189,7 +186,6 @@ export const t = (
     locale = configuration.locale
   }
   if (!translations.hasOwnProperty(locale)) {
-    logError(`Missing locale: "${locale}" in translations`)
     return replaceParams(key, replacements)
   }
   let processedKey = context ? `${key}<${context}>` : key
