@@ -7,7 +7,7 @@ import {
 export interface ITranslateConfig {
   translationFileUrl: string
   translations?: ILocaleTranslation
-  errorCallback?: (error: string) => void
+  // errorCallback?: (error: string) => void // Spams UI with useless alerts, TODO: Find better way to log
   cache?: boolean
   cacheExpirationTime?: number
   useLocalStorage?: boolean
@@ -147,7 +147,7 @@ export const setLocale = (locale: string) => {
     )
     return false
   }
-  if (!locales.find(l => l === locale) && !(locale.substr(0, 2) === 'en')) {
+  if (!locales.find((l) => l === locale) && !(locale.substr(0, 2) === 'en')) {
     logError(
       `Unable to set locale with locale: ${locale}. Locale not available`,
     )
