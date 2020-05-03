@@ -7,7 +7,7 @@ import {
 export interface ITranslateConfig {
   translationFileUrl: string
   translations?: ILocaleTranslation
-  // errorCallback?: (error: string) => void // Spams UI with useless alerts, TODO: Find better way to log
+  errorCallback?: (error: string) => void
   cache?: boolean
   cacheExpirationTime?: number
   useLocalStorage?: boolean
@@ -29,7 +29,7 @@ export interface IReplacement {
 let translations: ILocaleTranslation | undefined
 let configuration: ITranslateConfig = {
   translationFileUrl: '',
-  errorCallback: alert.bind(window),
+  // errorCallback: alert.bind(window), // Spams UI with useless alerts, TODO: Find better way to log
   useLocalStorage: true,
   cache: true,
   cacheExpirationTime: 60 * 60, // 1 hour
