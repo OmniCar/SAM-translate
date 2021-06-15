@@ -5,7 +5,7 @@ import {
   initTranslations,
   ITranslateConfig,
   setLocale,
-  t,
+  tUntyped,
 } from '.'
 import {
   context,
@@ -21,7 +21,7 @@ import {
   translatableValue,
 } from '../test/setupJest'
 
-const customErrorCallback = jest.fn(e => {
+const customErrorCallback = jest.fn((e) => {
   console.log(`error: ${e}`)
 })
 
@@ -50,11 +50,11 @@ test('Inits the translation configuration from mock url', async () => {
 })
 
 test('Verify that a valid translation is translated', () => {
-  expect(t(translatableKey)).toEqual(translatableValue)
+  expect(tUntyped(translatableKey)).toEqual(translatableValue)
 })
 
 test('An invalid translation should return original phrase', () => {
-  expect(t(nonExistingPhrase)).toEqual(nonExistingPhrase)
+  expect(tUntyped(nonExistingPhrase)).toEqual(nonExistingPhrase)
   errorCalls++
   expect(customErrorCallback).toHaveBeenCalledTimes(errorCalls)
 })
@@ -64,18 +64,18 @@ test('Correctly replaces words in a phrase', () => {
     num1: 4,
     num2: '3',
   }
-  expect(t(tokenKey, replacements)).toEqual(
+  expect(tUntyped(tokenKey, replacements)).toEqual(
     'Du har 4 ulæste beskeder og 3 notifikationer',
   )
 })
 
 test('Prefers translation including context', () => {
-  expect(t(noContextKey, undefined, context)).toEqual(contextValue)
-  expect(t(noContextKey)).toEqual(noContextValue)
+  expect(tUntyped(noContextKey, undefined, context)).toEqual(contextValue)
+  expect(tUntyped(noContextKey)).toEqual(noContextValue)
 })
 
 test('Fails gracefully if context is missing but key without context is available', () => {
-  expect(t(noContextKey, undefined, 'non existing context')).toEqual(
+  expect(tUntyped(noContextKey, undefined, 'non existing context')).toEqual(
     noContextValue,
   )
   errorCalls++
@@ -83,9 +83,9 @@ test('Fails gracefully if context is missing but key without context is availabl
 })
 
 test('An invalid translation should return original phrase also when adding a context', () => {
-  expect(t(nonExistingPhrase, undefined, 'non existing context')).toEqual(
-    nonExistingPhrase,
-  )
+  expect(
+    tUntyped(nonExistingPhrase, undefined, 'non existing context'),
+  ).toEqual(nonExistingPhrase)
   errorCalls++
   expect(customErrorCallback).toHaveBeenCalledTimes(errorCalls)
 })
@@ -95,7 +95,7 @@ test('Correctly replaces words in a non existing phrase', () => {
     num1: 4,
     num2: '3',
   }
-  expect(t(nonExistingTokenPhrase, replacements)).toEqual(
+  expect(tUntyped(nonExistingTokenPhrase, replacements)).toEqual(
     `You have ${replacements.num1} new contracts with ${replacements.num2} missing options`,
   )
 })

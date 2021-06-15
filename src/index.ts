@@ -67,12 +67,8 @@ export const initTranslations = async (
  * Returns true on success, false on error
  */
 export const fetchTranslations = async (): Promise<boolean> => {
-  const {
-    useLocalStorage,
-    translationFileUrl,
-    cache,
-    cacheExpirationTime,
-  } = configuration
+  const { useLocalStorage, translationFileUrl, cache, cacheExpirationTime } =
+    configuration
   if (useLocalStorage) {
     translations = getTranslationsFromLocalStorage(
       translationFileUrl,
@@ -166,7 +162,7 @@ export const getLocale = () =>
  * @param replacements optional replacements as key/value object
  * @param locale optional locale to use for translations
  */
-export const t = (
+export const tUntyped = (
   key: string,
   replacements?: IReplacement,
   context?: string,
