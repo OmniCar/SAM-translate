@@ -6,23 +6,19 @@ import {
 
 // Local storage tests
 test('Stores translations to local storage', () => {
-  const testUrl = 'https://test.com'
-  expect(persistTranslationsToLocalStorage(mockTranslations, testUrl))
+  const testKey = 'test'
+  expect(persistTranslationsToLocalStorage(mockTranslations, testKey))
     .toBeTruthy
-  expect(localStorage.__STORE__['__translations__https://test.com']).toEqual(
+  expect(localStorage.__STORE__['__translations__test']).toEqual(
     JSON.stringify(mockTranslations),
   )
-  expect(localStorage.__STORE__['__trans_time__https://test.com']).toBeDefined
+  expect(localStorage.__STORE__['__trans_time__test']).toBeDefined
 })
 
 test('Correctly returns stored values', () => {
-  expect(getTranslationsFromLocalStorage('https://test.com')).toEqual(
-    mockTranslations,
-  )
+  expect(getTranslationsFromLocalStorage('test')).toEqual(mockTranslations)
 })
 
 test('LocalStorage returns undefined if cache has expired', () => {
-  expect(getTranslationsFromLocalStorage('https://test.com', -1)).toEqual(
-    undefined,
-  )
+  expect(getTranslationsFromLocalStorage('test', -1)).toEqual(undefined)
 })

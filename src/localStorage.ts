@@ -7,12 +7,14 @@ const now = () => Math.round(new Date().getTime() / 1000)
 
 export const persistTranslationsToLocalStorage = (
   json: ILocaleTranslation,
-  url: string,
+  key: string,
 ) => {
   try {
     const serializedData = JSON.stringify(json)
-    localStorage.setItem(getStorageKey(url), serializedData)
-    localStorage.setItem(getTimeKey(url), `${now()}`)
+
+    localStorage.setItem(getStorageKey(key), serializedData)
+    localStorage.setItem(getTimeKey(key), `${now()}`)
+
     return true
   } catch (e) {
     return false
@@ -20,21 +22,18 @@ export const persistTranslationsToLocalStorage = (
 }
 
 export const getTranslationsFromLocalStorage = (
-  url: string,
+  localStorageKey: string,
   cacheExpiration?: number,
 ) => {
   try {
-    const persistedTranslations = localStorage.getItem(getStorageKey(url))
+    const persistedTranslations = localStorage.getItem(
+      getStorageKey(localStorageKey),
+    )
     if (persistedTranslations !== null) {
       if (cacheExpiration) {
-        try {
-          const persistedTime = localStorage.getItem(getTimeKey(url))
-          const atm = now()
-          if (Number(persistedTime) < atm - cacheExpiration) {
-            return undefined
-          }
-        } catch (error) {
-          // If we're unable to detect when data was persisted we return undefined
+        const persistedTime = localStorage.getItem(getTimeKey(localStorageKey))
+        const atm = now()
+        if (Number(persistedTime) < atm - cacheExpiration) {
           return undefined
         }
       }
@@ -43,10 +42,11 @@ export const getTranslationsFromLocalStorage = (
       return undefined
     }
   } catch (error) {
+    // If we're unable to detect when data was persisted we return undefined
     return undefined
   }
 }
 
-const getStorageKey = (url: string) => `${STORAGE_KEY}${url}`
+const getStorageKey = (key: string) => `${STORAGE_KEY}${key}`
 
-const getTimeKey = (url: string) => `${TIME_KEY}${url}`
+const getTimeKey = (key: string) => `${TIME_KEY}${key}`
