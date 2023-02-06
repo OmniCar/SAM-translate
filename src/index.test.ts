@@ -28,23 +28,27 @@ const customErrorCallback = jest.fn((e) => {
 let errorCalls = 0
 
 // Translation tests
-
-test('Inits the translation configuration directly', async () => {
+test('Does not init the translations', async () => {
+  global.fetch.mockResponseOnce(JSON.stringify(''))
   const configuration: ITranslateConfig = {
-    translationFileUrl: 'mock',
+    translationAPIUrl: 'mock',
     errorCallback: customErrorCallback,
-    translations: mockTranslations,
+    token: '',
+    localStorageKey: '',
   }
   await initTranslations(configuration)
-  expect(exportTranslations()).toEqual(mockTranslations)
+  expect(exportTranslations()).toEqual(undefined)
 })
 
 test('Inits the translation configuration from mock url', async () => {
-  fetch(JSON.stringify(mockTranslations))
+  global.fetch.mockResponseOnce(JSON.stringify(mockTranslations))
   const configuration: ITranslateConfig = {
-    translationFileUrl: 'mock',
+    translationAPIUrl: 'mock',
     errorCallback: customErrorCallback,
+    token: '',
+    localStorageKey: '',
   }
+
   await initTranslations(configuration)
   expect(exportTranslations()).toEqual(mockTranslations)
 })

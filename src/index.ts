@@ -1,25 +1,17 @@
-import { IsoLocale } from '@omnicar/sam-types'
+import { ILocaleTranslation, IsoLocale, ITranslation } from '@omnicar/sam-types'
 import {
   getTranslationsFromLocalStorage,
   persistTranslationsToLocalStorage,
 } from './localStorage'
 
 export interface ITranslateConfig {
-  translationFileUrl: string
-  translations?: ILocaleTranslation
+  translationAPIUrl?: string
   errorCallback?: (error: string) => void
-  cache?: boolean
   cacheExpirationTime?: number
   useLocalStorage?: boolean
   locale?: IsoLocale
-}
-
-export interface ILocaleTranslation {
-  [key: string]: ITranslation
-}
-
-export interface ITranslation {
-  [key: string]: string
+  token: string
+  localStorageKey: string
 }
 
 export interface IReplacement {
@@ -28,11 +20,11 @@ export interface IReplacement {
 
 let translations: ILocaleTranslation | undefined
 let configuration: ITranslateConfig = {
-  translationFileUrl: '',
   // errorCallback: alert.bind(window), // Spams UI with useless alerts, TODO: Find better way to log
   useLocalStorage: true,
-  cache: true,
   cacheExpirationTime: 60 * 60, // 1 hour
+  token: '',
+  localStorageKey: '',
 }
 let reportedMissingTranslations: Set<string> = new Set<string>()
 
@@ -47,16 +39,30 @@ export const initTranslations = async (
     ...configuration,
     ...conf,
   }
+  const { localStorageKey, cacheExpirationTime, translationAPIUrl, locale } =
+    configuration
+  const translationsFromLocalStorage = getTranslationsFromLocalStorage(
+    localStorageKey,
+    cacheExpirationTime,
+  )
+
+  if (!translationAPIUrl) {
+    logError(
+      'Unable to fetch translations because of missed translationApplication',
+    )
+    return false
+  }
+
   let status = false
   // If mock/prepared translations are available, use those
-  if (configuration.translations) {
-    translations = configuration.translations
+  if (translationsFromLocalStorage) {
+    translations = translationsFromLocalStorage
     status = true
   } else {
     status = await fetchTranslations()
   }
   // Default locale to first locale in translations if not set
-  if (status && !configuration.locale && translations) {
+  if (status && !locale && translations) {
     configuration.locale = Object.keys(translations)[0] as IsoLocale
   }
   return status
@@ -67,18 +73,32 @@ export const initTranslations = async (
  * Returns true on success, false on error
  */
 export const fetchTranslations = async (): Promise<boolean> => {
-  const { useLocalStorage, translationFileUrl, cache, cacheExpirationTime } =
-    configuration
+  const {
+    useLocalStorage,
+    translationAPIUrl,
+    cacheExpirationTime,
+    localStorageKey,
+  } = configuration
+
+  if (!translationAPIUrl) {
+    logError(
+      'Unable to fetch translations because of missed translationApplication',
+    )
+    return false
+  }
+
   if (useLocalStorage) {
     translations = getTranslationsFromLocalStorage(
-      translationFileUrl,
-      cache ? cacheExpirationTime : undefined,
+      localStorageKey,
+      cacheExpirationTime,
     )
     if (translations) {
       return true
     }
   }
-  translations = await getTranslationsFromRemote()
+
+  translations = await getTranslationsFromAPI(translationAPIUrl)
+
   if (translations) {
     return true
   } else {
@@ -87,25 +107,30 @@ export const fetchTranslations = async (): Promise<boolean> => {
 }
 
 /**
- * Fetches translations from remote url, parses the JSON, and persists it to
+ * Fetches translations JSON from API, and persists it to
  * local storage if setting is enabled
  */
-const getTranslationsFromRemote = async (): Promise<
-  ILocaleTranslation | undefined
-> => {
-  const { translationFileUrl, useLocalStorage } = configuration
+const getTranslationsFromAPI = async (
+  translationAPIUrl: string,
+): Promise<ILocaleTranslation | undefined> => {
+  const { useLocalStorage, token, localStorageKey } = configuration
+
   try {
-    const response = await fetch(translationFileUrl, {
+    const response = await fetch(translationAPIUrl, {
       mode: 'cors',
+      headers: {
+        'translations-token': token,
+      },
     })
+
     const json: ILocaleTranslation = await response.json()
-    if (useLocalStorage) {
-      persistTranslationsToLocalStorage(json, translationFileUrl)
-    }
+
+    useLocalStorage && persistTranslationsToLocalStorage(json, localStorageKey)
+
     return json
   } catch (error) {
     logError(
-      `Unable to fetch translations from url: ${translationFileUrl}. Error: ${error.message}`,
+      `Unable to fetch translations from url: ${translationAPIUrl}. Error: ${error.message}`,
     )
     return undefined
   }
@@ -156,6 +181,7 @@ export const getConfiguration = () => configuration
 
 export const getLocale = () =>
   configuration ? configuration.locale : undefined
+
 /**
  * Translates a given phrase using replacements and a locale
  * @param key phrase to translate
