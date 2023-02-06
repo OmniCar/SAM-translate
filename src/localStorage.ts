@@ -1,4 +1,4 @@
-import { ILocaleTranslation } from './'
+import { ILocaleTranslation } from '@omnicar/sam-types'
 
 const STORAGE_KEY = '__translations__'
 const TIME_KEY = '__trans_time__'

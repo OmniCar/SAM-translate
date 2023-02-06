@@ -1,4 +1,4 @@
-import { IsoLocale } from '@omnicar/sam-types'
+import { ILocaleTranslation, IsoLocale, ITranslation } from '@omnicar/sam-types'
 import {
   getTranslationsFromLocalStorage,
   persistTranslationsToLocalStorage,
@@ -12,14 +12,6 @@ export interface ITranslateConfig {
   locale?: IsoLocale
   token: string
   localStorageKey: string
-}
-
-export interface ILocaleTranslation {
-  [key: string]: ITranslation
-}
-
-export interface ITranslation {
-  [key: string]: string
 }
 
 export interface IReplacement {

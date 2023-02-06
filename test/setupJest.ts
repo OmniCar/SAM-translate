@@ -1,5 +1,5 @@
 import * as fetchMock from 'jest-fetch-mock'
-import { ILocaleTranslation } from '../src'
+import { ILocaleTranslation } from '@omnicar/sam-types'
 
 global.fetch = fetchMock as any
 
