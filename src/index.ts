@@ -191,7 +191,6 @@ export const getLocale = () =>
 export const tUntyped = (
   key: string,
   replacements?: IReplacement,
-  context?: string,
   locale?: string,
 ) => {
   if (key === '') {
@@ -210,29 +209,14 @@ export const tUntyped = (
   if (!translations.hasOwnProperty(locale)) {
     return replaceParams(key, replacements)
   }
-  let processedKey = context ? `${key}<${context}>` : key
-  if (!translations[locale].hasOwnProperty(processedKey)) {
-    if (!context) {
-      logError(`Missing translation for locale: "${locale}" with key: "${key}"`)
-      return replaceParams(key, replacements)
-    }
-    // If a context was provided, we check if a translation is available for the key without context
-    if (!translations[locale].hasOwnProperty(key)) {
-      logError(
-        `Missing translation for locale: "${locale}" with key: "${key}" and context: "${context}"`,
-      )
-      return replaceParams(key, replacements)
-    } else {
-      // We found a translation by not using the context
-      logError(
-        `Missing translation for locale: "${locale}" with context: "${context}". However, the translation was found for key: "${key}"`,
-      )
-      processedKey = key
-    }
+  if (!translations[locale].hasOwnProperty(key)) {
+    logError(`Missing translation for locale: "${locale}" with key: "${key}"`)
+    return replaceParams(key, replacements)
   }
-  let result = translations[locale][processedKey]
-  result = replaceParams(result, replacements)
-  return result
+
+  const result = translations[locale][key]
+
+  return replaceParams(result || key, replacements)
 }
 
 const replaceParams = (phrase: string, replacements?: IReplacement) => {

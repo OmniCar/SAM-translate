@@ -8,12 +8,9 @@ import {
   tUntyped,
 } from '.'
 import {
-  context,
-  contextValue,
+  emptyKey,
   locale,
   mockTranslations,
-  noContextKey,
-  noContextValue,
   nonExistingPhrase,
   nonExistingTokenPhrase,
   tokenKey,
@@ -73,23 +70,8 @@ test('Correctly replaces words in a phrase', () => {
   )
 })
 
-test('Prefers translation including context', () => {
-  expect(tUntyped(noContextKey, undefined, context)).toEqual(contextValue)
-  expect(tUntyped(noContextKey)).toEqual(noContextValue)
-})
-
-test('Fails gracefully if context is missing but key without context is available', () => {
-  expect(tUntyped(noContextKey, undefined, 'non existing context')).toEqual(
-    noContextValue,
-  )
-  errorCalls++
-  expect(customErrorCallback).toHaveBeenCalledTimes(errorCalls)
-})
-
-test('An invalid translation should return original phrase also when adding a context', () => {
-  expect(
-    tUntyped(nonExistingPhrase, undefined, 'non existing context'),
-  ).toEqual(nonExistingPhrase)
+test('An invalid translation should return original phrase', () => {
+  expect(tUntyped(nonExistingPhrase, undefined)).toEqual(nonExistingPhrase)
   errorCalls++
   expect(customErrorCallback).toHaveBeenCalledTimes(errorCalls)
 })
@@ -102,6 +84,10 @@ test('Correctly replaces words in a non existing phrase', () => {
   expect(tUntyped(nonExistingTokenPhrase, replacements)).toEqual(
     `You have ${replacements.num1} new contracts with ${replacements.num2} missing options`,
   )
+})
+
+test('Empty translation value should return original phrase', () => {
+  expect(tUntyped(emptyKey)).toEqual(emptyKey)
 })
 
 test('Returns the correct list of locales', () => {
