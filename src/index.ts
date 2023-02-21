@@ -116,6 +116,7 @@ const getTranslationsFromAPI = async (
   const { useLocalStorage, token, localStorageKey } = configuration
 
   try {
+    let json: ILocaleTranslation | undefined
     const response = await fetch(translationAPIUrl, {
       mode: 'cors',
       headers: {
@@ -123,9 +124,13 @@ const getTranslationsFromAPI = async (
       },
     })
 
-    const json: ILocaleTranslation = await response.json()
+    if (response.status === 200) {
+      json = await response.json()
 
-    useLocalStorage && persistTranslationsToLocalStorage(json, localStorageKey)
+      useLocalStorage &&
+        json &&
+        persistTranslationsToLocalStorage(json, localStorageKey)
+    }
 
     return json
   } catch (error) {
