@@ -99,6 +99,11 @@ test('Changes the locale correctly', () => {
   expect(getLocale()).toEqual('da-DK')
 })
 
+test('Changes the locale correctly to en', () => {
+  expect(setLocale('en')).toBe(true)
+  expect(getLocale()).toEqual('en')
+})
+
 test('Set the locale to an unkown locale', () => {
   expect(setLocale('nk-NO')).toBe(true)
   expect(getLocale()).toEqual('nk-NO')
