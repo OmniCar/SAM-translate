@@ -8,8 +8,14 @@
   ],
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watchAll",
+    "tsc": "node node_modules/typescript/bin/tsc -p ./tsconfig.json -w",
+    "tsc-once": "node node_modules/typescript/bin/tsc -p ./tsconfig.json"
+  },
   "devDependencies": {
-    "@omnicar/sam-types": "0.0.647",
+    "@omnicar/sam-types": "0.0.722",
     "@types/jest": "24.0.11",
     "@types/node": "^11.15.54",
     "jest": "^24.9.0",
@@ -18,12 +24,6 @@
     "ts-jest": "^24.3.0",
     "tslib": "1.9.3",
     "typescript": "~3.9"
-  },
-  "scripts": {
-    "test": "jest",
-    "test-watch": "jest --watchAll",
-    "tsc": "node node_modules/typescript/bin/tsc -p ./tsconfig.json -w",
-    "tsc-once": "node node_modules/typescript/bin/tsc -p ./tsconfig.json"
   },
   "jest": {
     "transform": {

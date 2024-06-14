@@ -3,3 +3,6 @@ node_modules/
 .vscode/
 dist/
 gitignore/
+
+# We do not want package-lock.json by npm in this repo, since we are using yarn.
+package-lock.json
