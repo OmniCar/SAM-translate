@@ -14,17 +14,17 @@ jobs:
       - checkout
       - run: node --version
       - run:
-          name: npm-build-compile
+          name: build-and-compile
           command: |
-            npm install
-            npm run tsc-once
+            npm install yarn
+            yarn tsc-once
       - run:
           name: tests
           command: |
             echo "Running Tests"
-            npm run test
+            yarn test
       - store_artifacts:
-          path: package-lock.json
+          path: yarn-lock.json
       - persist_to_workspace:
           root: .
           paths:
