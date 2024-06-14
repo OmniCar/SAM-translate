@@ -16,7 +16,8 @@ jobs:
       - run:
           name: build-and-compile
           command: |
-            npm install yarn
+            npm install yarn@1.22.22
+            yarn
             yarn tsc-once
       - run:
           name: tests
